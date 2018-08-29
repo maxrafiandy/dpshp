@@ -1,0 +1,213 @@
+<div id="menu">
+  <table style="float: left;">
+    <tr>
+      <td>
+        KECAMATAN
+      </td>
+
+      <td>
+        <select [(ngModel)]="kodeKecamatan" (change)="onKecamatanChanged(kodeKecamatan)">
+          <option value="737101">MARISO</option>
+          <option value="737102">MAMAJANG</option>
+          <option value="737103">MAKASSAR</option>
+          <option value="737104">UJUNG PANDANG</option>
+          <option value="737105">WAJO</option>
+          <option value="737106">BONTOALA</option>
+          <option value="737107">TALLO</option>
+          <option value="737108">UJUNG TANAH</option>
+          <option value="737109">PANAKUKANG</option>
+          <option value="737110">TAMALATE</option>
+          <option value="737111">BIRINGKANAYA</option>
+          <option value="737112">MANGGALA</option>
+          <option value="737113">RAPPOCINI</option>
+          <option value="737114">TAMALANREA</option>
+          <option value="737115">SANGKARRANG</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        KELURAHAN
+      </td>
+
+      <td>
+        <select [(ngModel)]="kodeKelurahan" (change)="onKelurahanChanged(kodeKelurahan)">
+          <option *ngFor="let p of kelurahan" value="{{p.kode_kelurahan}}">{{p.kelurahan}}</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>TANGGAL PLENO</td>
+
+      <td>
+        <input [(ngModel)]="tanggalPleno" type="text">
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <button type="button" (click)="showDpshp(kodeKelurahan)" style="width: 50%;">DPSHP Awal</button>
+        <button type="button" (click)="showDpshpa(kodeKelurahan)" style="width: 50%;">DPSHP Akhir</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div style="page-break-after: always;">
+  <table width="100%" style="border: none;">
+    <tr>
+      <td style="width: 150px; border: none;"></td>
+      <td style="border: none;"></td>
+      <td style="width: 150px; font-size: 12pt; border: none; text-align: right;">
+        <span style="border: 3px solid; right: 10px; top: 10px;">A.B.DPSHP.1-KPU</span>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="border: none;">
+        <img src="../../assets/logo-kpu.png" width="120" height="90">
+      </td>
+      <td style="font-size: 12pt; text-align: center; vertical-align: center; border: none;">
+        <span>
+          REKAPITULASI DAFTAR PEMILIH SEMENTARA HASIL PERBAIKAN DPS
+          <br> PEMILIHAN UMUM TAHUN 2019
+          <br> OLEH PPS
+        </span>
+      </td>
+      <td style="border: none;"></td>
+    </tr>
+  </table>
+
+  <div style="height: 90px; float: left; left: 50px; top: 20px;">
+
+  </div>
+
+  <div style="margin: 10px;">
+
+    <table style="border: none; left: 50px; font-size: 11pt; float: left; margin-left: 10px">
+      <tr>
+        <td style="border: none; font-size: 11pt;">PROVINSI</td>
+        <td style="border: none; font-size: 11pt;">: SULAWESI SELATAN</td>
+      </tr>
+
+      <tr>
+        <td style="border: none; font-size: 11pt;">KABUPATEN/KOTA</td>
+        <td style="border: none; ; font-size: 11pt;">: MAKASSAR</td>
+      </tr>
+    </table>
+
+    <table style="border: none; font-size: 11pt; margin-left: 800px">
+      <tr>
+        <td style="border: none; font-size: 11pt;">KECAMATAN</td>
+        <td style="border: none; font-size: 11pt;">: {{detailKelurahan.kecamatan}}</td>
+      </tr>
+
+      <tr>
+        <td style="border: none; font-size: 11pt;">DESA/KELURAHAN</td>
+        <td style="border: none; ; font-size: 11pt;">: {{detailKelurahan.kelurahan}}</td>
+      </tr>
+
+    </table>
+  </div>
+
+
+  <table cellspacing="0" style="width: 100%">
+    <thead>
+      <tr>
+        <th rowspan="2">NO</th>
+        <th rowspan="2" style="width: 6cm;">TPS</th>
+        <th colspan="3">PEMILIH BARU</th>
+        <th colspan="3">TIDAK MEMENUHI SYARAT</th>
+        <th colspan="3">PERBAIKAN DATA PEMILIH</th>
+        <th rowspan="2">KETERANGAN</th>
+      </tr>
+      <tr>
+        <th style="width: 3cm;">L</th>
+        <th style="width: 3cm;">P</th>
+        <th style="width: 3cm;">L+P</th>
+        <th style="width: 3cm;">L</th>
+        <th style="width: 3cm;">P</th>
+        <th style="width: 3cm;">L+P</th>
+        <th style="width: 3cm;">L</th>
+        <th style="width: 3cm;">P</th>
+        <th style="width: 3cm;">L+P</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of dps; let i = index">
+        <td style="text-align: center">{{i+1}}</td>
+        <td style="text-align: center">{{d.tps}}</td>
+
+        <td style="text-align: center">{{d.msyt_l+d.dptb_l || '-'}}</td>
+        <td style="text-align: center">{{d.msyt_p+d.dptb_p || '-'}}</td>
+        <td style="text-align: center">{{d.msyt_lp+d.dptb_lp || '-'}}</td>
+
+        <td style="text-align: center">{{d.tms_l || '-'}}</td>
+        <td style="text-align: center">{{d.tms_p || '-'}}</td>
+        <td style="text-align: center">{{d.tms_lp || '-'}}</td>
+
+        <td style="text-align: center">{{d.u_l || '-'}}</td>
+        <td style="text-align: center">{{d.u_p || '-'}}</td>
+        <td style="text-align: center">{{d.u_lp || '-'}}</td>
+
+        <td></td>
+      </tr>
+
+      <tr>
+        <td style="text-align: center;" colspan="2">
+          <strong>TOTAL</strong>
+        </td>
+
+        <td style="text-align: center; font-weight: bold;">{{(dptb.l+msyt.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(dptb.p+msyt.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(dptb.lp+msyt.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(tms.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(tms.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(tms.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(ubah.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(ubah.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(ubah.lp | number) || '-'}}</td>
+
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="page-break-inside: avoid; margin: auto; margin-top: 0.5cm; width: 60%; font-size: 11pt">
+    Disahkan dalam Rapat Pleno PPS di Makassar Tanggal
+    <strong>{{tanggalPleno}}</strong>
+    <br>PANITIA PEMUNGUTAN SUARA KELURAHAN
+    <strong>{{detailKelurahan.kelurahan.toUpperCase()}}</strong>
+    <br>
+
+    <table class="no-border" border="0">
+      <tr>
+        <td class="no-border" style="height: 1cm;">1. Ketua</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">{{detailKelurahan.pps1.toUpperCase()}}</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">. . . . . . . . . . . .</td>
+      </tr>
+
+      <tr>
+        <td class="no-border" style="height: 1cm;">2. Anggota</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">{{detailKelurahan.pps2.toUpperCase()}}</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">. . . . . . . . . . . .</td>
+      </tr>
+
+      <tr>
+        <td class="no-border" style="height: 1cm;">3. Anggota</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">{{detailKelurahan.pps3.toUpperCase()}}</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">. . . . . . . . . . . .</td>
+      </tr>
+    </table>
+  </div>
+</div>

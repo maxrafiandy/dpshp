@@ -1,0 +1,26 @@
+table {
+    border: 1px solid;
+}
+
+td, th {
+    border: 1px solid;
+}
+
+th {
+    font-size: 11pt;
+}
+
+td {
+    font-size: 8pt;
+}
+
+.no-border {
+    border: none;
+    font-size: 11pt;
+}
+
+@media print {
+    #menu {
+        display: none;
+    }
+}

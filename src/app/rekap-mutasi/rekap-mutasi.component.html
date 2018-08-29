@@ -1,0 +1,424 @@
+<div id="menu">
+  <table style="float: left;">
+    <tr>
+      <td>
+        KECAMATAN
+      </td>
+
+      <td>
+        <select [(ngModel)]="kodeKecamatan" (change)="onKecamatanChanged(kodeKecamatan)">
+          <option value="737101">MARISO</option>
+          <option value="737102">MAMAJANG</option>
+          <option value="737103">MAKASSAR</option>
+          <option value="737104">UJUNG PANDANG</option>
+          <option value="737105">WAJO</option>
+          <option value="737106">BONTOALA</option>
+          <option value="737107">TALLO</option>
+          <option value="737108">UJUNG TANAH</option>
+          <option value="737109">PANAKUKANG</option>
+          <option value="737110">TAMALATE</option>
+          <option value="737111">BIRINGKANAYA</option>
+          <option value="737112">MANGGALA</option>
+          <option value="737113">RAPPOCINI</option>
+          <option value="737114">TAMALANREA</option>
+          <option value="737115">SANGKARRANG</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        KELURAHAN
+      </td>
+
+      <td>
+        <select [(ngModel)]="kodeKelurahan" (change)="onKelurahanChanged(kodeKelurahan)">
+          <option *ngFor="let p of kelurahan" value="{{p.kode_kelurahan}}">{{p.kelurahan}}</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>TANGGAL PLENO</td>
+
+      <td>
+        <input [(ngModel)]="tanggalPleno" type="text">
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <button type="button" (click)="showDpshp(kodeKelurahan)" style="width: 50%;">DPSHP Awal</button>
+        <button type="button" (click)="showDpshpa(kodeKelurahan)" style="width: 50%;">DPSHP Akhir</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div style="page-break-after: always;">
+  <table width="100%" style="border: none;">
+    <tr>
+      <td style="width: 120px; border: none;"></td>
+      <td style="border: none;"></td>
+      <td style="width: 200px; font-size: 12pt; border: none;">
+        <span *ngIf="status.awal === 'DPS'" style="border: 3px solid; right: 200px; top: 10px;">REKAP DPS - DPSHP</span>
+        <span *ngIf="status.awal === 'DPSHP'" style="border: 3px solid; right: 200px; top: 10px;">REKAP DPSHP - DPSHPa</span>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="border: none;">
+        <img src="../../assets/logo-kpu.png" width="120" height="90">
+      </td>
+      <td style="font-size: 12pt; text-align: center; vertical-align: center; border: none;">
+        <span *ngIf="dpsToDpshp">
+          REKAPITULASI DPS MENUJU DPSHP
+          <br> PEMILIHAN UMUM TAHUN 2019
+          <br> OLEH PPS
+        </span>
+
+        <span *ngIf="!dpsToDpshp">
+          REKAPITULASI DPSHP MENUJU DPSHPa
+          <br> PEMILIHAN UMUM TAHUN 2019
+          <br> OLEH PPS
+        </span>
+      </td>
+      <td style="border: none;"></td>
+    </tr>
+  </table>
+
+  <div style="height: 90px; float: left; left: 50px; top: 20px;">
+
+  </div>
+
+  <div style="margin: 10px;">
+
+    <table style="border: none; left: 50px; font-size: 11pt; float: left; margin-left: 10px">
+      <tr>
+        <td style="border: none; font-size: 11pt;">PROVINSI</td>
+        <td style="border: none; font-size: 11pt;">: SULAWESI SELATAN</td>
+      </tr>
+
+      <tr>
+        <td style="border: none; font-size: 11pt;">KABUPATEN/KOTA</td>
+        <td style="border: none; ; font-size: 11pt;">: MAKASSAR</td>
+      </tr>
+    </table>
+
+    <table style="border: none; font-size: 11pt; margin-left: 800px">
+      <tr>
+        <td style="border: none; font-size: 11pt;">KECAMATAN</td>
+        <td style="border: none; font-size: 11pt;">: {{detailKelurahan.kecamatan}}</td>
+      </tr>
+
+      <tr>
+        <td style="border: none; font-size: 11pt;">DESA/KELURAHAN</td>
+        <td style="border: none; ; font-size: 11pt;">: {{detailKelurahan.kelurahan}}</td>
+      </tr>
+
+    </table>
+  </div>
+
+
+  <table cellspacing="0" style="width: 100%">
+    <thead>
+      <tr>
+        <th rowspan="3">NO</th>
+        <th rowspan="3" style="width: 3cm;">TPS</th>
+        <th rowspan="2" colspan="3">{{status.awal}}</th>
+        <th colspan="30">KODE TMS</th>
+        <th rowspan="2" colspan="3">TMS</th>
+        <th rowspan="2" colspan="3">UBAH</th>
+        <th colspan="6">MUTASI TPS</th>
+        <th colspan="6">TAMBAHAN</th>
+        <!-- <th colspan="6">SISA DUPLIKAT</th> -->
+        <th rowspan="2" colspan="3">{{status.hasil}}</th>
+      </tr>
+      <tr>
+        <th colspan="3">1</th>
+        <th colspan="3">2</th>
+        <th colspan="3">3</th>
+        <th colspan="3">4</th>
+        <th colspan="3">5</th>
+        <th colspan="3">6</th>
+        <th colspan="3">7</th>
+        <th colspan="3">8</th>
+        <th colspan="3">9</th>
+        <th colspan="3">10</th>
+        <th colspan="3">MASUK</th>
+        <th colspan="3">KELUAR</th>
+        <th colspan="3">DPTb</th>
+        <th colspan="3" style="font-size: 8pt">LAPORAN</th>
+        <!-- <th colspan="3" style="font-size: 8pt">Dalam Kecamatan</th>
+        <th colspan="3" style="font-size: 8pt">Lintas Kecamatan</th> -->
+      </tr>
+      <tr>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <!-- <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th>
+        <th style="width: 1cm;">L</th>
+        <th style="width: 1cm;">P</th>
+        <th style="width: 1cm;">L+P</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of dps; let i = index" [ngStyle]="{'background-color': i%2 === 0 ? 'none' : '#d6d6d6' }">
+        <td style="text-align: center">{{i+1}}</td>
+        <td style="text-align: center">{{d.tps}}</td>
+        <td style="text-align: center">{{d.dps_l || '-'}}</td>
+        <td style="text-align: center">{{d.dps_p || '-'}}</td>
+        <td style="text-align: center">{{d.dps_lp || '-'}}</td>
+
+        <td style="text-align: center">{{d.l1 || '-'}}</td>
+        <td style="text-align: center">{{d.p1 || '-'}}</td>
+        <td style="text-align: center">{{d.lp1 || '-'}}</td>
+
+        <td style="text-align: center">{{d.l2 || '-'}}</td>
+        <td style="text-align: center">{{d.p2 || '-'}}</td>
+        <td style="text-align: center">{{d.lp2 || '-'}}</td>
+
+        <td style="text-align: center">{{d.l3 || '-'}}</td>
+        <td style="text-align: center">{{d.p3 || '-'}}</td>
+        <td style="text-align: center">{{d.lp3 || '-'}}</td>
+
+        <td style="text-align: center">{{d.l4 || '-'}}</td>
+        <td style="text-align: center">{{d.p4 || '-'}}</td>
+        <td style="text-align: center">{{d.lp4 || '-'}}</td>
+
+        <td style="text-align: center">{{d.l5 || '-'}}</td>
+        <td style="text-align: center">{{d.p5 || '-'}}</td>
+        <td style="text-align: center">{{d.lp5 || '-'}}</td>
+
+        <td style="text-align: center">{{d.l6 || '-'}}</td>
+        <td style="text-align: center">{{d.p6 || '-'}}</td>
+        <td style="text-align: center">{{d.lp6 || '-'}}</td>
+
+        <td style="text-align: center">{{d.l7 || '-'}}</td>
+        <td style="text-align: center">{{d.p7 || '-'}}</td>
+        <td style="text-align: center">{{d.lp7 || '-'}}</td>
+
+        <td style="text-align: center">{{d.l8 || '-'}}</td>
+        <td style="text-align: center">{{d.p8 || '-'}}</td>
+        <td style="text-align: center">{{d.lp8 || '-'}}</td>
+
+        <td style="text-align: center">{{d.l9 || '-'}}</td>
+        <td style="text-align: center">{{d.p9 || '-'}}</td>
+        <td style="text-align: center">{{d.lp9 || '-'}}</td>
+
+        <td style="text-align: center">{{d.l10 || '-'}}</td>
+        <td style="text-align: center">{{d.p10 || '-'}}</td>
+        <td style="text-align: center">{{d.lp10 || '-'}}</td>
+
+        <td style="text-align: center">{{d.tms_l || '-'}}</td>
+        <td style="text-align: center">{{d.tms_p || '-'}}</td>
+        <td style="text-align: center">{{d.tms_lp || '-'}}</td>
+
+        <td style="text-align: center">{{d.u_l || '-'}}</td>
+        <td style="text-align: center">{{d.u_p || '-'}}</td>
+        <td style="text-align: center">{{d.u_lp || '-'}}</td>
+
+        <td style="text-align: center">{{d.masuk_l || '-'}}</td>
+        <td style="text-align: center">{{d.masuk_p || '-'}}</td>
+        <td style="text-align: center">{{d.masuk_lp || '-'}}</td>
+
+        <td style="text-align: center">{{d.keluar_l || '-'}}</td>
+        <td style="text-align: center">{{d.keluar_p || '-'}}</td>
+        <td style="text-align: center">{{d.keluar_lp || '-'}}</td>
+
+        <td style="text-align: center">{{d.dptb_l || '-'}}</td>
+        <td style="text-align: center">{{d.dptb_p || '-'}}</td>
+        <td style="text-align: center">{{d.dptb_lp || '-'}}</td>
+
+        <td style="text-align: center">{{d.msyt_l || '-'}}</td>
+        <td style="text-align: center">{{d.msyt_p || '-'}}</td>
+        <td style="text-align: center">{{d.msyt_lp || '-'}}</td>
+
+        <td style="text-align: center">{{d.dpshp_l || '-'}}</td>
+        <td style="text-align: center">{{d.dpshp_p || '-'}}</td>
+        <td style="text-align: center">{{d.dpshp_lp || '-'}}</td>
+
+        <!-- <td style="text-align: center">{{d.msyt_l || '-'}}</td>
+        <td style="text-align: center">{{d.msyt_p || '-'}}</td>
+        <td style="text-align: center">{{d.msyt_lp || '-'}}</td>
+
+        <td style="text-align: center">{{d.dpshp_l || '-'}}</td>
+        <td style="text-align: center">{{d.dpshp_p || '-'}}</td>
+        <td style="text-align: center">{{d.dpshp_lp || '-'}}</td> -->
+      </tr>
+
+      <tr>
+        <td style="text-align: center;" colspan="2">
+          <strong>TOTAL</strong>
+        </td>
+
+        <td style="text-align: center; font-weight: bold;">{{dps_l | number}}</td>
+        <td style="text-align: center; font-weight: bold;">{{dps_p | number}}</td>
+        <td style="text-align: center; font-weight: bold;">{{dps_lp | number}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(k1.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k1.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k1.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(k2.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k2.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k2.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(k3.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k3.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k3.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(k4.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k4.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k4.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(k5.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k5.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k5.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(k6.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k6.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k6.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(k7.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k7.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k7.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(k8.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k8.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k8.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(k9.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k9.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k9.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(k10.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k10.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(k10.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(tms.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(tms.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(tms.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(ubah.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(ubah.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(ubah.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(masuk.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(masuk.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(masuk.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(keluar.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(keluar.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(keluar.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(dptb.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(dptb.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(dptb.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{(msyt.l | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(msyt.p | number) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(msyt.lp | number) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{dpshp.l | number}}</td>
+        <td style="text-align: center; font-weight: bold;">{{dpshp.p | number}}</td>
+        <td style="text-align: center; font-weight: bold;">{{dpshp.lp | number}}</td>
+
+        <!-- <td style="text-align: center; font-weight: bold;">{{(msyt.l) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(msyt.p) || '-'}}</td>
+        <td style="text-align: center; font-weight: bold;">{{(msyt.lp) || '-'}}</td>
+
+        <td style="text-align: center; font-weight: bold;">{{dpshp.l | number}}</td>
+        <td style="text-align: center; font-weight: bold;">{{dpshp.p | number}}</td>
+        <td style="text-align: center; font-weight: bold;">{{dpshp.lp | number}}</td> -->
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="page-break-inside: avoid; margin: auto; margin-top: 0.5cm; width: 60%; font-size: 11pt">
+    Disahkan dalam Rapat Pleno PPS di Makassar Tanggal
+    <strong>{{tanggalPleno}}</strong>
+    <br>PANITIA PEMUNGUTAN SUARA KELURAHAN
+    <strong>{{detailKelurahan.kelurahan.toUpperCase()}}</strong>
+    <br>
+
+    <table class="no-border" border="0">
+      <tr>
+        <td class="no-border" style="height: 1cm;">1. Ketua</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">{{detailKelurahan.pps1.toUpperCase()}}</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">. . . . . . . . . . . .</td>
+      </tr>
+
+      <tr>
+        <td class="no-border" style="height: 1cm;">2. Anggota</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">{{detailKelurahan.pps2.toUpperCase()}}</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">. . . . . . . . . . . .</td>
+      </tr>
+
+      <tr>
+        <td class="no-border" style="height: 1cm;">3. Anggota</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">{{detailKelurahan.pps3.toUpperCase()}}</td>
+        <td class="no-border" style="width: 2cm;"></td>
+        <td class="no-border">. . . . . . . . . . . .</td>
+      </tr>
+    </table>
+  </div>
+</div>
